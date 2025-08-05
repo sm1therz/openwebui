@@ -1,6 +1,6 @@
 # fly.toml — OpenWebUI developer build (public image tag)
 
-app = "openwebui-devbuildnew"
+app = "openwebui-devbuildoffical"
 primary_region = "ord"
 
 [build]
