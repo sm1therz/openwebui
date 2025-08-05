@@ -1,7 +1,7 @@
 # fly.toml — Open WebUI (developer build) on Fly.io
 # Replace “my-openwebui-app” with your actual app name before you deploy.
 
-app = "my-openwebui-app"
+app = "openwebui-dev"
 primary_region = "ord"
 
 ###############################################################################
