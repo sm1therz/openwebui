@@ -1,12 +1,11 @@
-# fly.toml — Open WebUI (developer build) on Fly.io
+# fly.toml — Open-WebUI (developer build) on Fly.io
+# Build from the Dockerfile that’s in the repo
 
-app = "openwebuidevbuild"
+app = "openwebui-devbuild"
 primary_region = "ord"
 
 [build]
-  image = "ghcr.io/open-webui/open-webui-dev:latest"
-
-[env]
+  dockerfile = "./Dockerfile"
 
 [[mounts]]
   source       = "openwebui_data"
