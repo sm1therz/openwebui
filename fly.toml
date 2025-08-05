@@ -1,30 +1,43 @@
-# fly.toml app configuration file generated for ollama-webui-demo on 2024-02-06T11:03:35+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# fly.toml — Open WebUI (developer build) on Fly.io
+# Replace “my-openwebui-app” with your actual app name before you deploy.
 
-app = ''               # change this before deploying!
-primary_region = 'ord'
+app = "my-openwebui-app"
+primary_region = "ord"
 
+###############################################################################
+# Image: use the bleeding-edge dev tag so per-message delete works with O3 Pro
+###############################################################################
+[build]
+  image = "ghcr.io/open-webui/open-webui-dev:latest"
+
+###############################################################################
+# Environment — nothing required for base UI; add OPENAI_API_KEY later via
+# `fly secrets set OPENAI_API_KEY=sk-…`
+###############################################################################
 [env]
-DEFAULT_MODEL = 'llama3.1:8b'
-OLLAMA_BASE_URL = 'http://localhost:11434'
-OLLAMA_MODELS = '/app/backend/data/models'
 
+###############################################################################
+# Persistent storage — tiny (1 GB) volume keeps chats/settings between restarts
+###############################################################################
 [[mounts]]
-source = 'data'
-destination = '/app/backend/data'
-initial_size = '20gb'
+  source       = "openwebui_data"
+  destination  = "/app/backend/data"
+  initial_size = "1gb"
 
+###############################################################################
+# HTTP service — auto-scales to zero so you don’t pay when idle
+###############################################################################
 [http_service]
-internal_port = 8080
-force_https = true
-auto_stop_machines = true
-auto_start_machines = true
-min_machines_running = 0
-processes = ['app']
+  internal_port        = 8080
+  force_https          = true
+  auto_stop_machines   = true   # power off when unused
+  auto_start_machines  = true   # wake on first request
+  min_machines_running = 0
+  processes            = ["app"]
 
+###############################################################################
+# VM size — cheapest shared CPU with 512 MB RAM
+###############################################################################
 [[vm]]
-size = "performance-8x"
-memory = "16gb"
-gpu_kind = "l40s"
+  size   = "shared-cpu-1x"
+  memory = "512mb"
